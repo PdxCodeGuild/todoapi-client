@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import axios from 'axios';
+import List from './List';
+
+
+const App = () => {
+  const [lists, setLists] = React.useState([]);
+
+  const getLists = async () => {
+    const { data } = await axios.get('http://localhost:4000/list');
+    setLists(data);
+    console.log(data);
+  };
+
+  React.useEffect(() => {
+    getLists();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {lists.map((list) => <List key={list._id} _id={list._id} />)}
     </div>
   );
-}
+};
 
 export default App;
